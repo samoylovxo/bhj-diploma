@@ -13,8 +13,13 @@ class AccountsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (!element) {
+      throw new Error('Не элемент');
+    }
+    this.element = element;
+    this.registerEvents();
+    this.update();
   }
 
   /**
@@ -25,7 +30,14 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-
+    this.element.addEventListener('click', (e) => {
+      if (e.target.classList.contains('create-account')) {
+        App.getModal('createAccount').open();
+      }
+      if (e.target.closest('.account')) {
+        this.onSelectAccount(e.target);
+      }
+    });
   }
 
   /**
@@ -39,7 +51,16 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
-
+    if (User.current()) {
+      let data = User.current();
+      Account.list(data, (err, response) => {
+        if (response && response.success) {
+          console.log(response);
+          this.clear();
+          this.renderItem(response);
+        }
+      });
+    }
   }
 
   /**
@@ -48,7 +69,8 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
-
+    const account = document.querySelectorAll('.account');
+    [...account].forEach((elem) => elem.remove());
   }
 
   /**
@@ -58,8 +80,14 @@ class AccountsWidget {
    * счёта класс .active.
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
-  onSelectAccount( element ) {
-
+  onSelectAccount(element) {
+    element.closest('.account').classList.add('active');
+    for (let i = 0; i < this.element.children.length; i++) {
+      if (this.element.children[i] != element.closest('.account')) {
+        this.element.children[i].classList.remove('active');
+      }
+    }
+    App.showPage('transactions', { account_id: element.closest('.account').dataset.id });
   }
 
   /**
@@ -67,8 +95,19 @@ class AccountsWidget {
    * отображения в боковой колонке.
    * item - объект с данными о счёте
    * */
-  getAccountHTML(item){
+  getAccountHTML(item) {
+    let scoreArr = [];
+    for (let i = 0; i < item.data.length; i++) {
+      let score = `<li class="account" data-id="${item.data[i].id}">
+    <a href="#">
+        <span>${item.data[i].name}</span> /
+        <span>${item.data[i].sum} ₽</span>
+    </a>
+</li>`;
 
+      scoreArr.push(score);
+    }
+    return scoreArr;
   }
 
   /**
@@ -77,7 +116,7 @@ class AccountsWidget {
    * AccountsWidget.getAccountHTML HTML-код элемента
    * и добавляет его внутрь элемента виджета
    * */
-  renderItem(data){
-
+  renderItem(data) {
+    this.getAccountHTML(data).forEach((elem) => this.element.insertAdjacentHTML('beforeend', elem));
   }
 }
