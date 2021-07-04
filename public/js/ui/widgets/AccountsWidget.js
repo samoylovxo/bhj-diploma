@@ -52,12 +52,10 @@ class AccountsWidget {
    * */
   update() {
     if (User.current()) {
-      let data = User.current();
-      Account.list(data, (err, response) => {
+      Account.list(User.current(), (err, response) => {
         if (response && response.success) {
-          console.log(response);
           this.clear();
-          this.renderItem(response);
+          this.renderItem(response.data);
         }
       });
     }
@@ -81,6 +79,9 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount(element) {
+    if (!element) {
+      return;
+    }
     element.closest('.account').classList.add('active');
     for (let i = 0; i < this.element.children.length; i++) {
       if (this.element.children[i] != element.closest('.account')) {
@@ -96,18 +97,14 @@ class AccountsWidget {
    * item - объект с данными о счёте
    * */
   getAccountHTML(item) {
-    let scoreArr = [];
-    for (let i = 0; i < item.data.length; i++) {
-      let score = `<li class="account" data-id="${item.data[i].id}">
+    let score = `<li class="account" data-id="${item.id}">
     <a href="#">
-        <span>${item.data[i].name}</span> /
-        <span>${item.data[i].sum} ₽</span>
+        <span>${item.name}</span> /
+        <span>${item.sum} ₽</span>
     </a>
 </li>`;
 
-      scoreArr.push(score);
-    }
-    return scoreArr;
+    return score;
   }
 
   /**
@@ -117,6 +114,6 @@ class AccountsWidget {
    * и добавляет его внутрь элемента виджета
    * */
   renderItem(data) {
-    this.getAccountHTML(data).forEach((elem) => this.element.insertAdjacentHTML('beforeend', elem));
+    data.forEach((el) => this.element.insertAdjacentHTML('beforeend', this.getAccountHTML(el)));
   }
 }

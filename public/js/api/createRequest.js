@@ -4,17 +4,25 @@
  * */
 const createRequest = (options = {}) => {
   let xhr = new XMLHttpRequest();
+  xhr.responseType = 'json';
+  const fd = new FormData();
 
   try {
     if (options.method === 'GET') {
-      xhr.responseType = options.responseType;
-      xhr.open(options.method, options.url);
+      for (let k in options.data) {
+        options.url += `?${k}=${options.data[k]}&`;
+      }
+    }
+
+    xhr.open(options.method, options.url);
+
+    if (options.method === 'GET') {
       xhr.send();
     } else {
-      xhr.responseType = options.responseType;
-      xhr.open(options.method, options.url);
-      console.log(options.data);
-      xhr.send(options.data);
+      for (let k in options.data) {
+        fd.append(k, options.data[k]);
+      }
+      xhr.send(fd);
     }
 
     xhr.onload = () => {

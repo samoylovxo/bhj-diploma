@@ -9,7 +9,7 @@ class CreateTransactionForm extends AsyncForm {
    * */
   constructor(element) {
     super(element);
-    this.element = element;
+    // this.element = element;
     this.renderAccountsList();
   }
 
@@ -18,18 +18,15 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
-    let data = JSON.parse(User.current());
-    const select = this.element.querySelectorAll('.accounts-select');
-    Account.list(data, (err, response) => {
-      try {
-        if (response && response.success) {
-          [...response.data].forEach((elem) => {
-            let option = `<option value="${elem.id}">${elem.name}</option>`;
-            select[0].insertAdjacentHTML('beforeend', option);
-          });
-        }
-      } catch (e) {
-        throw new Error(err);
+    const select = this.element.querySelectorAll('.accounts-select')[0];
+    [...select].forEach((elem) => elem.remove());
+
+    Account.list(User.current(), (err, response) => {
+      if (response.success) {
+        [...response.data].forEach((elem) => {
+          let option = `<option value="${elem.id}">${elem.name}</option>`;
+          select.insertAdjacentHTML('beforeend', option);
+        });
       }
     });
   }
@@ -43,13 +40,9 @@ class CreateTransactionForm extends AsyncForm {
   onSubmit(data) {
     data.type = this.element.id == 'new-income-form' ? 'income' : 'expense';
     Transaction.create(data, (err, response) => {
-      try {
-        if (response && response.success) {
-          App.update();
-          App.getModal(this.element.closest('.modal').dataset.modalId).close();
-        }
-      } catch (e) {
-        throw new Error(err);
+      if (response && response.success) {
+        App.update();
+        App.getModal(this.element.closest('.modal').dataset.modalId).close();
       }
     });
   }

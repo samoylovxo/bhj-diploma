@@ -10,34 +10,11 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static list(data, callback) {
-    if (this.URL == '/account') {
-      createRequest({
-        url: this.URL,
-        method: 'GET',
-        responseType: 'json',
-        callback: (err, response) => {
-          try {
-            callback(err, response);
-          } catch (e) {
-            throw new Error(err);
-          }
-        },
-      });
-    }
-    if (this.URL == '/transaction') {
-      createRequest({
-        url: this.URL + `?account_id=${data}`,
-        method: 'GET',
-        responseType: 'json',
-        callback: (err, response) => {
-          try {
-            callback(err, response);
-          } catch (e) {
-            throw new Error(err);
-          }
-        },
-      });
-    }
+    createRequest({
+      url: this.URL + `?account_id=${data}`,
+      method: 'GET',
+      callback,
+    });
   }
 
   /**
@@ -49,15 +26,8 @@ class Entity {
     createRequest({
       url: this.URL,
       method: 'PUT',
-      responseType: 'json',
       data,
-      callback: (err, response) => {
-        try {
-          callback(err, response);
-        } catch (e) {
-          throw new Error(err);
-        }
-      },
+      callback,
     });
   }
 
@@ -69,15 +39,17 @@ class Entity {
     createRequest({
       url: this.URL,
       method: 'DELETE',
-      responseType: 'json',
       data,
-      callback: (err, response) => {
-        try {
-          callback(err, response);
-        } catch (e) {
-          throw new Error(err);
-        }
-      },
+      callback,
+    });
+  }
+
+  static removeAccount(data, callback) {
+    createRequest({
+      url: this.URL + `?id=${data}`,
+      method: 'DELETE',
+      data,
+      callback,
     });
   }
 }

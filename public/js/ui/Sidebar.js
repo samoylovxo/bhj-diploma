@@ -19,14 +19,14 @@ class Sidebar {
    * */
   static initToggleButton() {
     const body = document.getElementsByTagName('body')[0];
+    const toggle = document.getElementsByClassName('sidebar-toggle')[0];
 
     const f = (e) => {
-      if (e.target.classList.contains('sidebar-toggle')) {
-        body.classList.toggle('sidebar-open');
-      }
+      body.classList.toggle('sidebar-open');
+      body.classList.toggle('sidebar-collapse');
     };
 
-    body.addEventListener('click', f);
+    toggle.addEventListener('click', f);
   }
 
   /**
@@ -49,7 +49,11 @@ class Sidebar {
         App.getModal('register').open();
       }
       if (sidebarItem.classList.contains('menu-item_logout')) {
-        User.logout();
+        User.logout(JSON.stringify(User.current()), (err, response) => {
+          if (response.success) {
+            App.setState('init');
+          }
+        });
       }
     };
 

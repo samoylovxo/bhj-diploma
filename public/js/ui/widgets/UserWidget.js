@@ -24,6 +24,6 @@ class UserWidget {
    * */
   update() {
     const userName = document.querySelectorAll('.user-name')[0];
-    userName.innerHTML = JSON.parse(User.current()).name;
+    userName.innerHTML = User.current().name;
   }
 }

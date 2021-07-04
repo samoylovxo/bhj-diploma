@@ -38,9 +38,9 @@ class TransactionsPage {
       if (e.target.classList.contains('remove-account')) {
         this.removeAccount();
       }
-      // console.log(e.target.closest('.transaction__remove'));
+
       if (e.target.closest('.transaction__remove')) {
-        this.removeTransaction(e.target.dataset.id);
+        this.removeTransaction(e.target.closest('.transaction__remove').dataset.id);
       }
     });
   }
@@ -59,17 +59,13 @@ class TransactionsPage {
       return;
     }
     let question = confirm('Вы действительно хотите удалить счёт?');
-    let formData = new FormData();
-    formData.append('id', this.lastOptions.account_id);
-
+    const data = {
+      id: this.lastOptions.account_id,
+    };
     if (question) {
-      Account.remove(formData, (err, response) => {
-        try {
-          if (response && response.success) {
-            App.updateWidgets();
-          }
-        } catch (e) {
-          throw new Error(err);
+      Account.removeAccount(data, (err, response) => {
+        if (response && response.success) {
+          App.updateWidgets();
         }
       });
 
@@ -86,17 +82,15 @@ class TransactionsPage {
    * */
   removeTransaction(id) {
     let question = confirm('Вы действительно хотите удалить эту транзакцию?');
-    let formData = new FormData();
-    formData.append('id', id);
+    // const data = '?id=' + id;
+    const data = {
+      id: id,
+    };
 
     if (question) {
-      Transaction.remove(formData, (err, response) => {
-        try {
-          if (response && response.success) {
-            App.update();
-          }
-        } catch (e) {
-          throw new Error(err);
+      Transaction.remove(data, (err, response) => {
+        if (response && response.success) {
+          App.update();
         }
       });
 
@@ -117,20 +111,11 @@ class TransactionsPage {
     this.lastOptions = options;
     if (options) {
       Account.get(options.account_id, (err, response) => {
-        try {
-          const item = [...response.data].find((elem) => elem.id == options.account_id);
-          this.renderTitle(item.name);
-        } catch (e) {
-          throw new Error(err);
-        }
+        this.renderTitle(response.data.name);
       });
       Transaction.list(options.account_id, (err, response) => {
-        try {
-          if (response && response.success) {
-            this.renderTransactions(response.data);
-          }
-        } catch (e) {
-          throw new Error(err);
+        if (response && response.success) {
+          this.renderTransactions(response.data);
         }
       });
     }
@@ -176,38 +161,32 @@ class TransactionsPage {
    * item - объект с информацией о транзакции
    * */
   getTransactionHTML(item) {
-    let transacArr = [];
-
-    item.forEach((elem) => {
-      let transaction = `<div class="transaction transaction_expense row">
+    let transaction = `<div class="transaction transaction_${item.type} row">
             <div class="col-md-7 transaction__details">
               <div class="transaction__icon">
                   <span class="fa fa-money fa-2x"></span>
               </div>
               <div class="transaction__info">
-                  <h4 class="transaction__title">${elem.name}</h4>
+                  <h4 class="transaction__title">${item.name}</h4>
                   <!-- дата -->
-                  <div class="transaction__date">${this.formatDate(elem.created_at)}</div>
+                  <div class="transaction__date">${this.formatDate(item.created_at)}</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="transaction__summ">
               <!--  сумма -->
-                  ${elem.sum}<span class="currency">₽</span>
+                  ${item.sum}<span class="currency">₽</span>
               </div>
             </div>
             <div class="col-md-2 transaction__controls">
                 <!-- в data-id нужно поместить id -->
-                <button class="btn btn-danger transaction__remove" data-id="${elem.id}">
+                <button class="btn btn-danger transaction__remove" data-id="${item.id}">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
         </div>`;
 
-      transacArr.push(transaction);
-    });
-
-    return transacArr;
+    return transaction;
   }
 
   /**
@@ -217,8 +196,6 @@ class TransactionsPage {
   renderTransactions(data) {
     const sectionContent = this.element.getElementsByClassName('content')[0];
     sectionContent.innerHTML = '';
-    this.getTransactionHTML(data).forEach((elem) => {
-      sectionContent.insertAdjacentHTML('beforeend', elem);
-    });
+    data.forEach((el) => sectionContent.insertAdjacentHTML('beforeend', this.getTransactionHTML(el)));
   }
 }
