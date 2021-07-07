@@ -11,6 +11,12 @@
       "email": "qwe@ya",
       "password": "123",
       "id": "1bt7qceo0kpvdb8m0"
+    },
+    {
+      "name": "test",
+      "email": "test@test",
+      "password": "test",
+      "id": "1bt7qcflkkqtjo2oa"
     }
   ],
   "accounts": [
@@ -30,24 +36,9 @@
       "id": "3"
     },
     {
-      "name": "test",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "id": "1bt7qcd6wkq453ycj"
-    },
-    {
-      "name": "asd",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "id": "1bt7qcugkq454tb9"
-    },
-    {
-      "name": "zxc",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "id": "1bt7qcesckqdt6ukk"
-    },
-    {
-      "name": "vbn",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "id": "1bt7qcc98kqp2fa17"
+      "name": "promo",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "id": "1bt7qch7ckqtjop7n"
     }
   ],
   "transactions": [
@@ -187,24 +178,6 @@
       "user_id": "1"
     },
     {
-      "id": "1bt7qc1mkkq455imk",
-      "type": "income",
-      "name": "машина",
-      "sum": 21500,
-      "account_id": "1bt7qcugkq454tb9",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "created_at": "2021-06-19T19:15:42.860Z"
-    },
-    {
-      "id": "1bt7qchdkkqmti4jd",
-      "type": "expense",
-      "name": "tewtewt",
-      "sum": 2000,
-      "account_id": "1bt7qcd6wkq453ycj",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "created_at": "2021-07-02T20:57:13.080Z"
-    },
-    {
       "id": "1bt7qc5y8kqntefxq",
       "type": "expense",
       "name": "Долг",
@@ -214,22 +187,58 @@
       "created_at": "2021-07-03T13:42:07.406Z"
     },
     {
-      "id": "1bt7qcfcwkqoe2syc",
+      "id": "1bt7qcg78kqtjp57p",
       "type": "income",
-      "name": "uio",
-      "sum": 4500,
-      "account_id": "1bt7qcesckqdt6ukk",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "created_at": "2021-07-03T23:20:56.339Z"
+      "name": "Инвест",
+      "sum": 100000,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:57:07.620Z"
     },
     {
-      "id": "1bt7qch1okqp2fjru",
+      "id": "1bt7qcguwkqtjphub",
+      "type": "income",
+      "name": "Долг",
+      "sum": 30000,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:57:23.986Z"
+    },
+    {
+      "id": "1bt7qcbogkqtjqape",
       "type": "expense",
-      "name": "testy",
-      "sum": 2000,
-      "account_id": "1bt7qcc98kqp2fa17",
-      "user_id": "1bt7qceo0kpvdb8m0",
-      "created_at": "2021-07-04T10:42:41.753Z"
+      "name": "лого",
+      "sum": 3000,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:58:01.393Z"
+    },
+    {
+      "id": "1bt7qcgcgkqtjqw0z",
+      "type": "expense",
+      "name": "аренда",
+      "sum": 45000,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:58:29.026Z"
+    },
+    {
+      "id": "1bt7qcggskqtjr80b",
+      "type": "expense",
+      "name": "машина",
+      "sum": 52300,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:58:44.554Z"
+    },
+    {
+      "id": "1bt7qc1owkqtjrjcp",
+      "type": "income",
+      "name": "Долг 2",
+      "sum": 17500,
+      "account_id": "1bt7qch7ckqtjop7n",
+      "user_id": "1bt7qcflkkqtjo2oa",
+      "created_at": "2021-07-07T13:58:59.256Z"
     }
   ]
 }

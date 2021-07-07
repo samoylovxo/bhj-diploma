@@ -18,13 +18,13 @@ class TransactionsPage {
     this.registerEvents();
   }
 
-  static lastOptions = '';
-
   /**
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
-    this.render();
+    if (this.lastOptions) {
+      this.render(this.lastOptions);
+    }
   }
 
   /**
@@ -66,11 +66,11 @@ class TransactionsPage {
       Account.removeAccount(data, (err, response) => {
         if (response && response.success) {
           App.updateWidgets();
+          alert('Готово! Счет удален');
         }
       });
 
       this.clear();
-      alert('Готово! Счет удален');
     }
   }
 
@@ -82,7 +82,6 @@ class TransactionsPage {
    * */
   removeTransaction(id) {
     let question = confirm('Вы действительно хотите удалить эту транзакцию?');
-    // const data = '?id=' + id;
     const data = {
       id: id,
     };
@@ -91,10 +90,9 @@ class TransactionsPage {
       Transaction.remove(data, (err, response) => {
         if (response && response.success) {
           App.update();
+          alert('Готово! Транзакция удалена');
         }
       });
-
-      alert('Готово! Транзакция удалена');
     }
   }
 
